@@ -1,0 +1,5 @@
+name: netlify-plugin-nuxt-incremental-generation
+inputs:
+  - name: supportIncremental
+    description: Support incrementally generating pages
+    default: true
