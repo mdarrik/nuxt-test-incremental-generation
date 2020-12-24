@@ -26,7 +26,7 @@ module.exports = {
   },
   async onSuccess({ constants, utils, inputs }) {
     const cacheDirs = getCacheDirs(constants)
-    exec(`cp dist ${constants.PUBLISH_DIR}`)
+    await exec(`cp dist ${constants.PUBLISH_DIR}`)
     if (await utils.cache.save(cacheDirs)) {
       console.log('Stored the Nuxt build to speed up future builds')
     } else {
