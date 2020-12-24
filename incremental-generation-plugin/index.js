@@ -4,7 +4,6 @@ const path = require('path')
 const getCacheDirs = (constants) => [
   constants.PUBLISH_DIR,
   path.normalize(`${constants.PUBLISH_DIR}/../.nuxt`),
-  path.normalize(`${constants.PUBLISH_DIR}/../dist`),
 ]
 let supportIncremental = process.env.GENERATE_SUPPORT_INCREMENTAL ?? false
 module.exports = {
