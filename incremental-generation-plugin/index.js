@@ -1,4 +1,4 @@
-const { exec } = require('child_process')
+const { execSync } = require('child_process')
 const path = require('path')
 
 const getCacheDirs = (constants) => [
@@ -26,7 +26,7 @@ module.exports = {
   },
   async onSuccess({ constants, utils, inputs }) {
     const cacheDirs = getCacheDirs(constants)
-    await exec(`cp dist ${constants.PUBLISH_DIR}`)
+    execSync(`cp -r dist ${constants.PUBLISH_DIR}`)
     if (await utils.cache.save(cacheDirs)) {
       console.log('Stored the Nuxt build to speed up future builds')
     } else {
