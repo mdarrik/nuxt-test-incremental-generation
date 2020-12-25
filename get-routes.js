@@ -11,24 +11,28 @@ const buildPayload = process.env.INCOMING_HOOK_BODY
   : false
 
 export default async function () {
+  // if buildPayload exists, it's an incremental build
   if (buildPayload) {
-    // if content change, get value of date from build
+    // fetch the data for the date in the build payload.
     const nasaApiSearchParams = nasaAPI.searchParams
-    nasaApiSearchParams.set('date', buildPayload.date)
+    nasaApiSearchParams.set(
+      'date',
+      new Date(buildPayload.date).toLocaleDateString('en-CA')
+    )
     const todayPicture = await fetch(nasaAPI).then((resp) => resp.json())
-
+    // generate just the 1 page from the payload.
     return [
       {
         route: todayPicture.date,
         payload: {
           ...todayPicture,
           alt: altText[todayPicture.date],
-          latest: new Date().toLocaleDateString('en-CA'),
+          latest: buildPayload.date,
         },
       },
-      { route: '/', payload: new Date().toLocaleDateString('en-CA') },
     ]
   }
+  // otherwise, fetch all Pictures from January 1, 2020 to the latest of either Yesterday or 12/31/2020
   const yearStart = new Date('01-01-2020')
   const yearEnd = new Date('12-31-2020')
   const today = new Date()
@@ -45,6 +49,5 @@ export default async function () {
       latest: endDate.toLocaleDateString('en-CA'),
     },
   }))
-  routes.push({ route: '/', payload: yesterday.toLocaleDateString('en-CA') })
-  return [] // routes
+  return routes
 }
