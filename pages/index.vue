@@ -33,7 +33,8 @@ export default {
   name: 'App',
   inject: ['$chakraColorMode', '$toggleColorMode'],
   asyncData({payload}) {
-    const latestPictureLinkDate = payload ?? new Date(new Date().setDate(new Date().getDate() -1)).toLocaleDateString('en-CA');
+    const hookBody = process.env.INCOMING_HOOK_BODY ? JSON.parse(process.env.INCOMING_HOOK_BODY) : false;
+    const latestPictureLinkDate = hookBody ? new Date(hookBody.date) : new Date(new Date().setDate(new Date().getDate() -1)).toLocaleDateString('en-CA');
     return {latestPictureLinkDate}
   },
   data () {
